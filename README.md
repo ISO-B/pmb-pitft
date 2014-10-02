@@ -33,58 +33,60 @@ Make sure you enable ssh and set root password.
 
 After installing and configuring PMB its time to take ssh connection to you PMB using ssh and root account. Use your favorite ssh program. I am using putty.
 After logging in enter following commands:
+<pre>
 apt-get install rpi-update
 echo insecure >> ~/.curlrc
 REPO_URI=https://github.com/notro/rpi-firmware rpi-update
 reboot
+</pre>
 
 Wait until your PMB is booted and log back in using ssh. Next you will need your favorite file-editor on pi. I use nano.
 
-Open file: /etc/modprobe.d/raspi-blacklist.conf
+<pre>Open file: /etc/modprobe.d/raspi-blacklist.conf
 Change line: blacklist spi-bcm2708
 	 To: #blacklist spi-bcm2708
-and save the file
+and save the file</pre>
 
-Open file: /etc/modules
+<pre>Open file: /etc/modules
 add following lines end of file and save it.
 spi-bcm2708
 fbtft_device
 stmpe_device
-gpio_backlight_device
+gpio_backlight_device</pre>
 
-Make file: /etc/modprobe.d/pitft.conf
+<pre>Make file: /etc/modprobe.d/pitft.conf
 add following lines to that file and save it.
 options fbtft_device name=pitft rotate=270 frequency=32000000
 options stmpe_device cs=1 chip=stmpe610 blocks=gpio,ts irq-pullup irq-gpio=24 irq-base=330 sample-time=4 mod-12b=1 ref-sel=0 adc-freq=2 ave-ctrl=3 touch-det-delay=4 settling=2 fraction-z=7 i-drive=0
-options gpio_backlight_device gpio=252
+options gpio_backlight_device gpio=252</pre>
 
 After that editing and creating files its time to give some commands to pi.
-apt-get update
+<pre>apt-get update
 apt-get install fbi
 apt-get install python-pygame
-sudo apt-get install evtest tslib libts-bin
+sudo apt-get install evtest tslib libts-bin</pre>
 
 We need to make symlink for touchscreen.
-Open file: /etc/udev/rules.d/95-stmpe.rules
+<pre>Open file: /etc/udev/rules.d/95-stmpe.rules
 and add following line there and save it.
-SUBSYSTEM=="input", ATTRS{name}=="stmpe-ts", ENV{DEVNAME}=="*event*", SYMLINK+="input/touchscreen" 
+SUBSYSTEM=="input", ATTRS{name}=="stmpe-ts", ENV{DEVNAME}=="*event*", SYMLINK+="input/touchscreen" </pre>
 
-Time to reboot pi one more time. Give command: reboot
+Time to reboot pi one more time. Give command: <code>reboot</code>
 
 Once pi is booted again log back in.
 Lets verify that your screen is working.
 Enter following commands and you should see image on your pi's screen. If so everything is ok.
-wget http://adafruit-download.s3.amazonaws.com/adapiluv320x240.jpg
-fbi -T 2 -d /dev/fb1 -noverbose -a adapiluv320x240.jpg
+<pre>wget http://adafruit-download.s3.amazonaws.com/adapiluv320x240.jpg
+fbi -T 2 -d /dev/fb1 -noverbose -a adapiluv320x240.jpg</pre>
 
 Calibrate touch screen using adafruits tutorial: https://learn.adafruit.com/adafruit-pitft-28-inch-resistive-touchscreen-display-raspberry-pi/touchscreen-install-and-calibrate#manual-calibration
 
 Download pmb-pitft files from github.
 From pitft-ui.py you need to change font if you are using something else than Helvetica Neue Bold and check that path is correct.
 Use following command to start ui:
-screen sudo python location-of-ui.py
+<code>screen sudo python location-of-ui.py</code>
 
-example: screen sudo python pimusicbox/ui.py
+<code>example: screen sudo python pimusicbox/ui.py</code>
 
 Author notes:
 =============
@@ -94,26 +96,26 @@ There might be some bugs left, but don't worry we can fix those, hopefully. Feel
 
 Thanks:
 ===========
-Pi MusicBox Team
+<pre>Pi MusicBox Team
 For making this great audio system
-http://www.pimusicbox.com/
+http://www.pimusicbox.com/</pre>
 
-Notro and other people on project FBTFT
+<pre>Notro and other people on project FBTFT
 For making drivers for screen
-https://github.com/notro/fbtft/wiki
+https://github.com/notro/fbtft/wiki</pre>
 
-project pylast @ github
+<pre>project pylast @ github
 For their Last.FM Python library
-https://github.com/pylast/pylast
+https://github.com/pylast/pylast</pre>
 
-project python-mpd2 @ github
+<pre>project python-mpd2 @ github
 For their MPD-client Python library
-https://github.com/Mic92/python-mpd2
+https://github.com/Mic92/python-mpd2</pre>
 
-Matt Gentile @ Icon Deposit
+<pre>Matt Gentile @ Icon Deposit
 For his awesome Black UI Kit
-http://www.icondeposit.com/design:108
+http://www.icondeposit.com/design:108</pre>
 
-Biga
+<pre>Biga
 Petite Icons
-http://www.designfreebies.com/2011/10/20/petite-icons/
+http://www.designfreebies.com/2011/10/20/petite-icons/</pre>
