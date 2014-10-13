@@ -64,7 +64,8 @@ After that editing and creating files its time to give some commands to pi.
 <pre>apt-get update
 apt-get install fbi
 apt-get install python-pygame
-sudo apt-get install evtest tslib libts-bin</pre>
+pip install python-mpd2
+apt-get install evtest tslib libts-bin</pre>
 
 We need to make symlink for touchscreen.
 <pre>Open file: /etc/udev/rules.d/95-stmpe.rules
