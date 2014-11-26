@@ -19,7 +19,7 @@ class PmbPitft:
 		self.lfm = lfm
 
 		# Paths
-		self.path = "/root/pimusicbox/"
+		self.path = "/root/pmb-pitft/"
 		
 		# Fonts
 		self.fontfile = self.path + "helvetica-neue-bold.ttf"
@@ -95,10 +95,9 @@ class PmbPitft:
 		print self.mpdc.mpd_version
 		
 		# Turn backlight on
-		subprocess.call("echo 0 | sudo tee /sys/class/backlight/*/bl_power", shell=True)
-		self.backlight = 1 
+		self.turn_backlight_on()
 
-	def	refresh_mpd(self):
+	def refresh_mpd(self):
 		if self.reconnect:
 			self.reconnect_mpd()
 		if self.reconnect == False:
@@ -481,14 +480,18 @@ class PmbPitft:
 	def toggle_backlight(self):
 		bl = (self.backlight + 1) % 2
 		if bl == 1:
-			subprocess.call("echo 0 | sudo tee /sys/class/backlight/*/bl_power", shell=True)
+			self.turn_backlight_on()
 		else:
-			subprocess.call("echo 1 | sudo tee /sys/class/backlight/*/bl_power", shell=True)
-		self.backlight = bl
+			self.turn_backlight_off()
 
 	def turn_backlight_off(self):
 		subprocess.call("echo 1 | sudo tee /sys/class/backlight/*/bl_power", shell=True)
 		self.backlight = 0
+
+	def turn_backlight_on(self):
+                subprocess.call("echo 0 | sudo tee /sys/class/backlight/*/bl_power", shell=True)
+                self.backlight = 1
+
 
 	def get_backlight_status(self):
 		return self.backlight
