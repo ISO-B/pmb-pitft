@@ -168,10 +168,4 @@ size = width, height = 320, 240
 screen = pygame.display.set_mode(size)
 print pygame.display.get_driver()
 
-#define other things
-current_track = "SELECTED"
-screen_status = 1
-sleeptimer = None
-subprocess.call("echo 0 | sudo tee /sys/class/backlight/*/bl_power", shell=True)
-
 main() #check for key presses and start emergency exit
