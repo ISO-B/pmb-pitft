@@ -19,7 +19,8 @@ class PmbPitft:
 		self.lfm = lfm
 
 		# Paths
-		self.path = "/root/pmb-pitft/"
+		self.path = os.path.dirname(sys.argv[0]) + "/"
+		os.chdir(self.path)
 		
 		# Fonts
 		self.fontfile = self.path + "helvetica-neue-bold.ttf"
