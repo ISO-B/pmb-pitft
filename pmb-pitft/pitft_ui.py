@@ -20,7 +20,7 @@ class PmbPitft:
 
 		# Paths
 		self.path = os.path.dirname(sys.argv[0]) + "/"
-    os.chdir(self.path)
+		os.chdir(self.path)
 		
 		# Fonts
 		self.fontfile = self.path + "helvetica-neue-bold.ttf"
