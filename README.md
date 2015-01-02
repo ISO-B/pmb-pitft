@@ -83,11 +83,23 @@ fbi -T 2 -d /dev/fb1 -noverbose -a adapiluv320x240.jpg</pre>
 Calibrate touch screen using adafruits tutorial: https://learn.adafruit.com/adafruit-pitft-28-inch-resistive-touchscreen-display-raspberry-pi/touchscreen-install-and-calibrate#manual-calibration
 
 Download pmb-pitft files from github.
-From pitft-ui.py you need to change font if you are using something else than Helvetica Neue Bold and check that path is correct.
-Use following command to start ui:
-<code>screen sudo python location-of-ui.py</code>
+To be sure to start in the home directory do
 
-<code>example: screen sudo python pimusicbox/ui.py</code>
+<code>cd ~</code>
+
+Then download the following for cloning the git:
+
+<code>apt-get install git-core</code>
+
+After installing clone the git:
+
+<code>git clone https://github.com/ISO-B/pmb-pitft.git</code>
+
+From pitft-ui.py you need to change font if you are using something else than Helvetica Neue Bold and check that path is correct.
+
+Use following command to start ui:
+
+<code>screen sudo python /root/pmb-pitft/pmb-pitft/ui.py</code>
 
 Author notes:
 =============
