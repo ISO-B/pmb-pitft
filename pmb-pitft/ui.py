@@ -166,6 +166,24 @@ def main():
 #set size of the screen
 size = width, height = 320, 240
 screen = pygame.display.set_mode(size)
+
+## HAX FOR FREEZING ##
+class Alarm(Exception):
+	pass
+def alarm_handler(signum, frame):
+	raise Alarm
+signal(SIGALRM, alarm_handler)
+alarm(3)
+try:
+	# Set screen size
+	size = width, height = 320, 240
+	screen = pygame.display.set_mode(size)
+	alarm(0)
+except Alarm:
+	raise KeyboardInterrupt
+## HAX END ##
+
+
 print pygame.display.get_driver()
 
 main() #check for key presses and start emergency exit
