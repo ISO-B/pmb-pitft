@@ -12,6 +12,7 @@ from math import ceil
 import datetime
 from datetime import timedelta
 import pitft_ui
+from signal import alarm, signal, SIGALRM, SIGKILL
 
 # Setting up MPD Clinet
 client = MPDClient()
