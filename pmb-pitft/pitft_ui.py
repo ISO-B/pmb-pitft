@@ -428,8 +428,8 @@ class PmbPitft:
 			try:
 				coverart_url = lastfm_album.get_cover_image(2)
 				if coverart_url:
-					subprocess.check_output("wget -q --limit-rate=40k %s -O %s/cover.png" % (coverart_url, self.path), shell=True )
-					coverart=pygame.image.load(self.path + "cover.png")
+					subprocess.check_output("wget -q --limit-rate=40k %s -O %s/cover.png" % (coverart_url, "/tmp/"), shell=True )
+					coverart=pygame.image.load("/tmp/" + "cover.png")
 					self.image["cover"] = pygame.transform.scale(coverart, (163, 163))
 					self.processingCover = False
 					self.coverFetched = True
