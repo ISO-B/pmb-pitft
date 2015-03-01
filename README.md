@@ -114,6 +114,7 @@ Use following command to start ui:
 TO-DO:
 =========
 - Daemonazing
+- Logging and better exception handling
 - Gestures
 - Playlist selector
 - Got other ideas? Post issue and tell me about it
