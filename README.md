@@ -26,9 +26,16 @@ Things you need:
 - [Optional] PiBow TFT Raspberry Pi Case ( http://shop.pimoroni.com/products/pitft-pibow ) (Bought mine from ModMyPi: https://www.modmypi.com/pimoroni-pitft-case )
 - [Optional] Helvetica Neue Bold-font. You can use normal Helvetica Bold as well or some other font.
 
+Known issues:
+==============
+- PiTFT touchscreen is not working with Pi2, yet.
+- Capacitive PiTFT does not work with Pi1 B rev1. (Model B rev 1 have an older layout for the I2C pins and won't be able to use the touch screen.)
+
 Installing:
 ===========
-First you need to install and configure Pi MusicBox(PMB). Instructions and everything else you need for this can be found on their website http://www.pimusicbox.com/
+Current installing guide is tested and working with: Resistive PiTFT + Raspberry Pi 1 Model B rev1 + Pi MusicBox v.0.53 . Resistive PiTFT should work fine with all Pi1 B models. I haven't had time and equipment to test capacitive PiTFT yet, but it should work also, except that you need to do small changes to make backlight work (https://github.com/ISO-B/pmb-pitft/issues/1). 
+
+First you need to install and configure Pi MusicBox(PMB). Instructions and everything else you need for this can be found on their website http://www.pimusicbox.com/ 
 Make sure you enable ssh and set root password.
 
 After installing and configuring PMB its time to take ssh connection to you PMB using ssh and root account. Use your favorite ssh program. I am using putty.
@@ -97,9 +104,19 @@ After installing clone the git:
 
 From pitft-ui.py you need to change font if you are using something else than Helvetica Neue Bold and check that path is correct.
 
+To change font edit /root/pmb-pitft/pmb-pitft/pitft_ui.py file line 26 and replace "helvetica-neue-bold.ttf" with your own font name. example "OpenSans-Bold.ttf". You can download Open Sans from www.fontsquirrel.com/fonts/open-sans. Transfer ttf file to /root/pmb-pitft/pmb-pitft/ folder.
+
+
 Use following command to start ui:
 
 <code>screen sudo python /root/pmb-pitft/pmb-pitft/ui.py</code>
+
+TO-DO:
+=========
+- Daemonazing
+- Gestures
+- Playlist selector
+- Got other ideas? Post issue and tell me about it
 
 Author notes:
 =============
