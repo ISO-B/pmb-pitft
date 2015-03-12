@@ -24,7 +24,7 @@ os.environ["SDL_MOUSEDRV"] = "TSLIB"
 
 # Logging configs
 logger = logging.getLogger("PMB PiTFT logger")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 handler = TimedRotatingFileHandler('pmb-pitft.log',when="midnight",interval=1,backupCount=14)
 formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
@@ -89,7 +89,7 @@ class PMBPitftDaemon(Daemon):
 		# In order to perform a write operation you need to authenticate yourself
 		#username = "your_user_name"
 		#password_hash = pylast.md5("your_password")
-		network = pylast.LastFMNetwork(api_key = API_KEY, api_secret = API_SECRET)
+		self.network = pylast.LastFMNetwork(api_key = API_KEY, api_secret = API_SECRET)
 
 		# Screen manager ###############
 		logger.info("Setting screen manager")

@@ -225,19 +225,25 @@ class PmbPitft:
 
 		# Album
 		if self.album != album or self.oldCoverartThreadRunning:
+			self.logger.debug("Album if")
 			self.album = album
 			self.updateAlbum = True
 			self.cover = False
 			# Find cover art on different thread
 			try:
 				if self.coverartThread:
+					self.logger.debug("if caT")
 					if self.coverartThread.is_alive():
+						self.logger.debug("caT is alive")
 						self.oldCoverartThreadRunning = True
 					else:
+						self.logger.debug("caT not live")
 						self.oldCoverartThreadRunning = False
 						self.coverartThread = Thread(target=self.fetch_coverart)
+						self.logger.debug("caT go")
 						self.coverartThread.start()
 				else:
+					self.logger.debug("not caT")
 					self.coverartThread = Thread(target=self.fetch_coverart)
 					self.coverartThread.start()
 			except Exception, e:
@@ -422,24 +428,37 @@ class PmbPitft:
 		self.updateAll		 = False
 		
 	def fetch_coverart(self):
+		self.logger.debug("caT start")
 		self.processingCover = True
 		self.coverFetched = False
 		self.cover = False
-		
-		lastfm_album = self.lfm.get_album(self.artist, self.album)
+		try:
+			lastfm_album = self.lfm.get_album(self.artist, self.album)
+			self.logger.debug("caT album: %s" % lastfm_album)
+		except Exception, e:
+			self.logger.exception(e)
+			raise
+
 		if lastfm_album:
 			try:
 				coverart_url = lastfm_album.get_cover_image(2)
+				self.logger.debug("caT curl: %s" % coverart_url)
 				if coverart_url:
+					self.logger.debug("caT sp start")
 					subprocess.check_output("wget -q --limit-rate=40k %s -O %s/cover.png" % (coverart_url, "/tmp/"), shell=True )
+					self.logger.debug("caT sp end")
 					coverart=pygame.image.load("/tmp/" + "cover.png")
+					self.logger.debug("caT c loaded")
 					self.image["cover"] = pygame.transform.scale(coverart, (163, 163))
+					self.logger.debug("caT c placed")
 					self.processingCover = False
 					self.coverFetched = True
 					self.cover = True
-			except:
+			except Exception, e:
+				self.logger.exception(e)
 				pass
 		self.processingCover = False
+		self.logger.debug("caT end")
 
 	def toggle_random(self):
 		random = (self.random + 1) % 2
