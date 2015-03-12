@@ -106,22 +106,22 @@ From pitft-ui.py you need to change font if you are using something else than He
 
 To change font edit /root/pmb-pitft/pmb-pitft/pitft_ui.py file line 26 and replace "helvetica-neue-bold.ttf" with your own font name. example "OpenSans-Bold.ttf". You can download Open Sans from www.fontsquirrel.com/fonts/open-sans. Transfer ttf file to /root/pmb-pitft/pmb-pitft/ folder.
 
-
+This is now daemon and it has three commands: start, restart and stop
 Use following command to start ui:
 
-<code>screen sudo python /root/pmb-pitft/pmb-pitft/ui.py</code>
+<code>sudo python /root/pmb-pitft/pmb-pitft/ui.py start</code>
+
+
 
 TO-DO:
 =========
-- Daemonazing
-- Logging and better exception handling
 - Gestures
 - Playlist selector
 - Got other ideas? Post issue and tell me about it
 
 Author notes:
 =============
-There is probably better way doing somethings that I have done. Keep in mind that this is first(actually third) version. It would have been awesome to have this as mopidy extension, but I couldn't find way to pull that out. Since pygame screen things need root account/access. This took lot of trial and error. I have installed pi musicbox again and again counteless time before I managed to audio work with screen.
+There is probably better way doing somethings that I have done. It would have been awesome to have this as mopidy extension, but I couldn't find way to pull that out. Since pygame screen things need root account/access. This took lot of trial and error. I have installed pi musicbox again and again counteless time before I managed to audio work with screen.
 
 There might be some bugs left, but don't worry we can fix those, hopefully. Feel free to give any improvement ideas.
 
