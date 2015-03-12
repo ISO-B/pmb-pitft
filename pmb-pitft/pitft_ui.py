@@ -14,9 +14,10 @@ import datetime
 from datetime import timedelta
 
 class PmbPitft:
-	def __init__(self, client, lfm):
+	def __init__(self, client, lfm, logger):
 		self.mpdc = client
 		self.lfm = lfm
+		self.logger = logger
 
 		# Paths
 		self.path = os.path.dirname(sys.argv[0]) + "/"
@@ -93,7 +94,7 @@ class PmbPitft:
 		self.updateAll		 = True
 
 		# Print data
-		print self.mpdc.mpd_version
+		self.logger.info("MPD server version: %s" % self.mpdc.mpd_version)
 		
 		# Turn backlight on
 		self.turn_backlight_on()
@@ -108,7 +109,7 @@ class PmbPitft:
 				self.song = self.mpdc.currentsong()
 				connection = True
 			except Exception as e:
-				print e
+				self.logger.debug(e)
 				connection = False
 				self.status = {}
 				self.song = {}
@@ -121,9 +122,10 @@ class PmbPitft:
 						print "Nothing to do"
 				except Exception, e:
 					self.reconnect = True
-					print e
+					self.logger.debug(e)
 
 	def reconnect_mpd(self):
+		self.logger.info("Reconnecting to MPD server")
 		client = MPDClient()
 		client.timeout = 10
 		client.idletimeout = None
@@ -133,12 +135,12 @@ class PmbPitft:
 				client.connect("localhost", 6600)
 				noConnection=False
 			except Exception, e:
-				print e
+				self.logger.info(e)
 				noConnection=True
 				time.sleep(15)
 		self.mpdc = client
 		self.reconnect = False
-		print "Connection Established!"
+		self.logger.info("Connection to MPD server established.")
 
 
 	def parse_mpd(self):
@@ -223,22 +225,29 @@ class PmbPitft:
 
 		# Album
 		if self.album != album or self.oldCoverartThreadRunning:
+			self.logger.debug("Album if")
 			self.album = album
 			self.updateAlbum = True
 			self.cover = False
 			# Find cover art on different thread
 			try:
 				if self.coverartThread:
+					self.logger.debug("if caT")
 					if self.coverartThread.is_alive():
+						self.logger.debug("caT is alive")
 						self.oldCoverartThreadRunning = True
 					else:
+						self.logger.debug("caT not live")
 						self.oldCoverartThreadRunning = False
 						self.coverartThread = Thread(target=self.fetch_coverart)
+						self.logger.debug("caT go")
 						self.coverartThread.start()
 				else:
+					self.logger.debug("not caT")
 					self.coverartThread = Thread(target=self.fetch_coverart)
 					self.coverartThread.start()
-			except:
+			except Exception, e:
+				self.logger.debug("Coverartthread: %s" % e)
 				self.processingCover = False
 
 		# Track Title
@@ -419,24 +428,37 @@ class PmbPitft:
 		self.updateAll		 = False
 		
 	def fetch_coverart(self):
+		self.logger.debug("caT start")
 		self.processingCover = True
 		self.coverFetched = False
 		self.cover = False
-		
-		lastfm_album = self.lfm.get_album(self.artist, self.album)
+		try:
+			lastfm_album = self.lfm.get_album(self.artist, self.album)
+			self.logger.debug("caT album: %s" % lastfm_album)
+		except Exception, e:
+			self.logger.exception(e)
+			raise
+
 		if lastfm_album:
 			try:
 				coverart_url = lastfm_album.get_cover_image(2)
+				self.logger.debug("caT curl: %s" % coverart_url)
 				if coverart_url:
+					self.logger.debug("caT sp start")
 					subprocess.check_output("wget -q --limit-rate=40k %s -O %s/cover.png" % (coverart_url, "/tmp/"), shell=True )
+					self.logger.debug("caT sp end")
 					coverart=pygame.image.load("/tmp/" + "cover.png")
+					self.logger.debug("caT c loaded")
 					self.image["cover"] = pygame.transform.scale(coverart, (163, 163))
+					self.logger.debug("caT c placed")
 					self.processingCover = False
 					self.coverFetched = True
 					self.cover = True
-			except:
+			except Exception, e:
+				self.logger.exception(e)
 				pass
 		self.processingCover = False
+		self.logger.debug("caT end")
 
 	def toggle_random(self):
 		random = (self.random + 1) % 2
@@ -486,12 +508,14 @@ class PmbPitft:
 			self.turn_backlight_off()
 
 	def turn_backlight_off(self):
+		self.logger.debug("Backlight off")
 		subprocess.call("echo 1 | sudo tee /sys/class/backlight/*/bl_power", shell=True)
 		self.backlight = 0
 
 	def turn_backlight_on(self):
-                subprocess.call("echo 0 | sudo tee /sys/class/backlight/*/bl_power", shell=True)
-                self.backlight = 1
+		self.logger.debug("Backlight on")
+		subprocess.call("echo 0 | sudo tee /sys/class/backlight/*/bl_power", shell=True)
+		self.backlight = 1
 
 
 	def get_backlight_status(self):
@@ -515,7 +539,7 @@ class PmbPitft:
 		self.sleepTimer = sleeptimer
 
 	def sleep(self):
-		print "SLEEP"
+		self.logger.info("SLEEP")
 		self.turn_backlight_off()
 		self.control_player("stop")
 		self.sleepTimer = None
