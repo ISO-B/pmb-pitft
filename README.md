@@ -115,6 +115,7 @@ Use following command to start ui:
 
 TO-DO:
 =========
+- Easy option to switch between capasitive and resistive PiTFTs
 - Gestures
 - Playlist selector
 - Got other ideas? Post issue and tell me about it
