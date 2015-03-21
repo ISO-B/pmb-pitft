@@ -43,7 +43,7 @@ After logging in enter following commands:
 <pre>
 apt-get install rpi-update
 echo insecure >> ~/.curlrc
-REPO_URI=https://github.com/notro/rpi-firmware rpi-update
+REPO_URI=https://github.com/notro/rpi-firmware rpi-update 4815829b3f98e1b9c2648d9643dfe993054923ce
 reboot
 </pre>
 
