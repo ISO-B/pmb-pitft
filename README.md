@@ -1,5 +1,11 @@
 PMB-PiTFT (Pi MusicBox PiTFT) is small Python program/script/whatever that uses mopidy's mpd-api to show controlling ui on Raspberry Pi's screen.
 
+Not maintained anymore
+======================
+For more up-to-date version check following forks:
+- Arzk/pitft-playerui https://github.com/Arzk/pitft-playerui
+- britvic42/pmb-pitft https://github.com/britvic42/pmb-pitft
+
 Features:
 ===========
 Shows following details of currently playing track:
